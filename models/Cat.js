@@ -28,11 +28,13 @@ const catSchema = new mongoose.Schema(
       default: [],
     },
 
+    // this is probably gonna be a future feature (unless i have the time to do it)
     ownedCostumes: {
       type: [String],
       default: [],
     },
 
+    // this is probably gonna be a future feature (unless i have the time to do it)
     ownedToys: {
       type: [String],
       default: [],
@@ -48,11 +50,13 @@ const catSchema = new mongoose.Schema(
       default: "",
     },
 
+    // this is probably gonna be a future feature (unless i have the time to do it)
     equippedCostume: {
       type: String,
       default: "",
     },
 
+    // this is probably gonna be a future feature (unless i have the time to do it)
     equippedToy: {
       type: String,
       default: "",
