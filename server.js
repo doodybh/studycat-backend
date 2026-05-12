@@ -8,6 +8,8 @@ const logger = require('morgan');
 const authRouter = require('./controllers/auth.routes');
 const verifyToken = require('./middleware/verify-token');
 const catRouter = require("./controllers/cat.routes");
+const subjectRouter = require("./controllers/subject.routes");
+const sessionRouter = require("./controllers/session.routes");
 
 
 mongoose.connect(process.env.MONGODB_URI);
@@ -23,6 +25,8 @@ app.use(logger('dev'));
 // Routes go here
 app.use('/auth', authRouter);
 app.use("/cat", verifyToken, catRouter);
+app.use("/subjects", verifyToken, subjectRouter);
+app.use("/session", verifyToken, sessionRouter);
 
 app.listen(3000, () => {
   console.log('The express app is ready!');

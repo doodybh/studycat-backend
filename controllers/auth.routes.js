@@ -3,6 +3,9 @@ const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 
+
+const verifyToken = require("../middleware/verify-token");
+
 // POST /auth/sign-up
 router.post("/sign-up", async (req, res) => {
   try {
@@ -92,6 +95,20 @@ router.post("/sign-in", async (req, res) => {
     res.json({ token });
   } catch (err) {
     console.log(err);
+    res.status(500).json({ err: err.message });
+  }
+});
+
+// GET /auth
+router.get("/", verifyToken ,async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    const userObject = user.toObject();
+
+    delete userObject.hashedPassword;
+    res.status(200).json(userObject);
+  } catch (err) {
     res.status(500).json({ err: err.message });
   }
 });

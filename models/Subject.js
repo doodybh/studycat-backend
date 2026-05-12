@@ -5,16 +5,26 @@ const subjectSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
+      trim: true,
+      minlength: 2,
+      maxlength: 30,
     },
 
-    color: String,
-    description: String,
+    color: {
+      type: String,
+      default: "#ff82bd",
+      match: /^#([0-9A-Fa-f]{6})$/,
+    },
 
-    notes: [String],
+    notes: {
+      type: String,
+      default: "",
+    },
 
     totalStudyTime: {
       type: Number,
       default: 0,
+      min: 0,
     },
 
     owner: {

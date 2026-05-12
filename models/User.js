@@ -53,7 +53,13 @@ const userSchema = new mongoose.Schema(
     streak: {
       type: Number,
       default: 0,
+    },
+
+    happiness: {
+      type: Number,
+      default: 50,
       min: 0,
+      max: 100,
     },
   },
   { timestamps: true },
