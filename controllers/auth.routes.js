@@ -10,11 +10,9 @@ router.post("/sign-up", async (req, res) => {
     const foundUser = await User.findOne({ username: req.body.username });
 
     if (foundUser) {
-      return res
-        .status(409)
-        .json({
-          err: "Username taken please sign in or Sign up with different username",
-        });
+      return res.status(409).json({
+        err: "Username taken please sign in or Sign up with different username",
+      });
     }
 
     // 1.5: validation for password length and characters
@@ -64,9 +62,9 @@ router.post("/sign-in", async (req, res) => {
     });
 
     if (!foundUser) {
-      return res
-        .status(401)
-        .json({ err: "username/email or password incorrect" });
+      return res.status(401).json({
+        err: "username/email or password incorrect",
+      });
     }
 
     // 3. compare the password they give me vs the password in the DB
@@ -77,9 +75,9 @@ router.post("/sign-in", async (req, res) => {
     );
 
     if (!doesPasswordMatch) {
-      return res
-        .status(401)
-        .json({ err: "username/email or password incorrect" });
+      return res.status(401).json({
+        err: "username/email or password incorrect",
+      });
     }
 
     const payload = foundUser.toObject();
