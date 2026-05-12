@@ -5,33 +5,56 @@ const userSchema = new mongoose.Schema(
     username: {
       type: String,
       required: true,
-      minLength: 3,
-      maxLength: 20,
+      minlength: 3,
+      maxlength: 20,
       trim: true,
       unique: true,
       lowercase: true,
     },
+
     hashedPassword: {
       type: String,
       required: true,
     },
+
     email: {
       type: String,
       required: true,
+      unique: true,
       trim: true,
+      lowercase: true,
       minlength: 5,
-      match:
-        /^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)?@[a-zA-Z0-9]+(-[a-zA-Z0-9]+)?\.[a-zA-Z]{2,3}(\.[a-zA-Z]{2,3})?$/,
+      maxlength: 100,
+
+      match: [
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        "Please enter a valid email address",
+      ],
     },
+
     coins: {
       type: Number,
+      default: 0,
       min: 0,
     },
+
+    xp: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+
     level: {
       type: Number,
+      default: 1,
+      min: 1,
+    },
+
+    streak: {
+      type: Number,
+      default: 0,
       min: 0,
     },
-    streak: Number,
   },
   { timestamps: true },
 );
