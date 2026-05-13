@@ -2,7 +2,6 @@ const router = require("express").Router();
 const User = require("../models/User");
 const Subject = require("../models/Subject");
 
-// COMPLETE STUDY SESSION
 router.post("/complete", async (req, res) => {
   try {
     const { studiedMinutes, breakMinutes, subjectId } = req.body;
