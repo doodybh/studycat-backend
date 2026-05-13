@@ -40,12 +40,22 @@ const catSchema = new mongoose.Schema(
       default: [],
     },
 
+    ownedGlasses: {
+      type: [String],
+      default: [],
+    },
+
     ownedBackgrounds: {
       type: [String],
       default: [],
     },
 
     equippedHat: {
+      type: String,
+      default: "",
+    },
+
+    equippedGlasses: {
       type: String,
       default: "",
     },
