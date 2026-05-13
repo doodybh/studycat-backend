@@ -3,7 +3,6 @@ const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 
-
 const verifyToken = require("../middleware/verify-token");
 
 // POST /auth/sign-up
@@ -100,7 +99,7 @@ router.post("/sign-in", async (req, res) => {
 });
 
 // GET /auth
-router.get("/", verifyToken ,async (req, res) => {
+router.get("/", verifyToken, async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
 
@@ -108,6 +107,19 @@ router.get("/", verifyToken ,async (req, res) => {
 
     delete userObject.hashedPassword;
     res.status(200).json(userObject);
+  } catch (err) {
+    res.status(500).json({ err: err.message });
+  }
+});
+
+router.put("/debug", verifyToken, async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(req.user._id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(200).json(user);
   } catch (err) {
     res.status(500).json({ err: err.message });
   }
