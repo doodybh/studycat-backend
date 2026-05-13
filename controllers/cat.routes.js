@@ -101,4 +101,21 @@ router.put("/", async (req, res) => {
   }
 });
 
+router.put("/edit", async (req, res) => {
+  try {
+    const updatedCat = await Cat.findOneAndUpdate(
+      { owner: req.user._id },
+      {
+        name: req.body.name,
+        color: req.body.color,
+      },
+      { new: true },
+    );
+
+    res.status(200).json(updatedCat);
+  } catch (err) {
+    res.status(500).json({ err: err.message });
+  }
+});
+
 module.exports = router;
