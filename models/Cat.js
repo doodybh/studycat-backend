@@ -47,7 +47,7 @@ const catSchema = new mongoose.Schema(
 
     ownedBackgrounds: {
       type: [String],
-      default: "background-1",
+      default: ["background-1"],
     },
 
     equippedHat: {
@@ -74,7 +74,7 @@ const catSchema = new mongoose.Schema(
 
     equippedBackground: {
       type: String,
-      default: "",
+      default: "background-1",
     },
 
     owner: {
