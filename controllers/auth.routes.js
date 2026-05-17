@@ -9,38 +9,70 @@ const verifyToken = require("../middleware/verify-token");
 router.post("/sign-up", async (req, res) => {
   try {
     // 1. verify that the username doesn't already exist in the Database
-    const foundUser = await User.findOne({ username: req.body.username });
+
+    const username = req.body.username.toLowerCase().trim();
+    const email = req.body.email.toLowerCase().trim();
+    const password = req.body.password;
+
+    const foundUser = await User.findOne({ username });
 
     if (foundUser) {
       return res.status(409).json({
-        err: "Username taken please sign in or Sign up with different username",
+        err: "Username is already taken.",
       });
     }
 
     // 1.5: validation for password length and characters
     // Uncomment this if you want to enforce password with 1 letter, 1 number, 8 characters minimum
-    /*     const regexString = '^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$'
 
-    if (!req.body.password.match(new RegExp(regexString))) {
-        return res.status(400).json({
-            err: 'Password must be minimum 8 characters, include at least one letter and one number'
-        })
-    } */
+    const regexString = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,}$";
+
+    if (!password.match(new RegExp(regexString))) {
+      return res.status(400).json({
+        err: "Password must be at least 8 characters and include a letter, number, and special character",
+      });
+    }
+
+    const foundEmail = await User.findOne({ email });
+
+    if (foundEmail) {
+      return res.status(409).json({
+        err: "Email is already in use.",
+      });
+    }
 
     // 2. save the user in the Database with the encrypted password
+
     const createdUser = await User.create({
-      username: req.body.username,
-      email: req.body.email,
-      hashedPassword: bcrypt.hashSync(req.body.password, 12),
+      username,
+      email,
+      hashedPassword: bcrypt.hashSync(password, 12),
     });
 
     const userObject = createdUser.toObject();
     delete userObject.hashedPassword;
+
     // 3. send back the created user
-    res.status(201).json({ user: userObject });
+
+    return res.status(201).json({ user: userObject });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ err: err.message });
+
+    if (err.code === 11000) {
+      if (err.keyPattern?.email) {
+        return res.status(409).json({
+          err: "Email is already in use.",
+        });
+      }
+
+      if (err.keyPattern?.username) {
+        return res.status(409).json({
+          err: "Username is already taken.",
+        });
+      }
+    }
+
+    return res.status(500).json({ err: err.message });
   }
 });
 
@@ -91,10 +123,10 @@ router.post("/sign-in", async (req, res) => {
       expiresIn: "24h",
     });
 
-    res.json({ token });
+    return res.json({ token });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ err: err.message });
+    return res.status(500).json({ err: err.message });
   }
 });
 
@@ -106,9 +138,9 @@ router.get("/", verifyToken, async (req, res) => {
     const userObject = user.toObject();
 
     delete userObject.hashedPassword;
-    res.status(200).json(userObject);
+    return res.status(200).json(userObject);
   } catch (err) {
-    res.status(500).json({ err: err.message });
+    return res.status(500).json({ err: err.message });
   }
 });
 
@@ -119,9 +151,9 @@ router.put("/debug", verifyToken, async (req, res) => {
       runValidators: true,
     });
 
-    res.status(200).json(user);
+    return res.status(200).json(user);
   } catch (err) {
-    res.status(500).json({ err: err.message });
+    return res.status(500).json({ err: err.message });
   }
 });
 

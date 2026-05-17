@@ -5,7 +5,7 @@ const catSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
-      minlength: 2,
+      // minlength: 2,
       maxlength: 20,
       trim: true,
     },
@@ -29,16 +29,16 @@ const catSchema = new mongoose.Schema(
     },
 
     // this is probably gonna be a future feature (unless i have the time to do it)
-    ownedCostumes: {
-      type: [String],
-      default: [],
-    },
+    // ownedCostumes: {
+    //   type: [String],
+    //   default: [],
+    // },
 
     // this is probably gonna be a future feature (unless i have the time to do it)
-    ownedToys: {
-      type: [String],
-      default: [],
-    },
+    // ownedToys: {
+    //   type: [String],
+    //   default: [],
+    // },
 
     ownedGlasses: {
       type: [String],
@@ -61,16 +61,16 @@ const catSchema = new mongoose.Schema(
     },
 
     // this is probably gonna be a future feature (unless i have the time to do it)
-    equippedCostume: {
-      type: String,
-      default: "",
-    },
+    // equippedCostume: {
+    //   type: String,
+    //   default: "",
+    // },
 
     // this is probably gonna be a future feature (unless i have the time to do it)
-    equippedToy: {
-      type: String,
-      default: "",
-    },
+    // equippedToy: {
+    //   type: String,
+    //   default: "",
+    // },
 
     equippedBackground: {
       type: String,

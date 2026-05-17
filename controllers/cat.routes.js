@@ -8,7 +8,9 @@ router.post("/", async (req, res) => {
     const existingCat = await Cat.findOne({ owner: req.user._id });
 
     if (existingCat) {
-      return res.status(400).json({ err: "You already created a cat" });
+      return res.status(400).json({
+        err: "You already have a cat.",
+      });
     }
 
     const cat = await Cat.create({
@@ -17,9 +19,17 @@ router.post("/", async (req, res) => {
       owner: req.user._id,
     });
 
-    res.status(201).json(cat);
+    return res.status(201).json(cat);
   } catch (err) {
-    res.status(500).json({ err: err.message });
+    if (err.code === 11000) {
+      return res.status(400).json({
+        err: "You already have a cat.",
+      });
+    }
+
+    return res.status(500).json({
+      err: "Something went wrong while creating your cat.",
+    });
   }
 });
 
